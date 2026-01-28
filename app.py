@@ -43,12 +43,8 @@ if st.button("Analyze"):
 
         # 3. RAG explanation (only if high risk)
         if risk_label == 1:
-            rag_output = explain_risk(
-                query_embedding=embedding,
-                index=index,
-                metadata=metadata,
-                k=5
-            )
+            rag_output = explain_risk(embedding, k=5)
+
 
             st.subheader("Why this ticket is risky")
             st.write(rag_output["explanation"])
