@@ -1,95 +1,98 @@
 # InsightOps
 
-InsightOps is a production-grade Retrieval-Augmented Generation (RAG) and MLOps system designed to ingest, deduplicate, embed, store, and query large-scale operational and textual datasets with reliability and auditability. It is built to move beyond demo RAG systems and address real-world data engineering, ML lifecycle, and retrieval challenges.
+InsightOps is a production-grade support ticket risk analysis system built on a data-first RAG and MLOps backbone. Its primary goal is to identify high-risk customer support tickets from large, noisy datasets, with RAG used as an analysis and explanation layer rather than the core product.
+
+This is not a demo ML project. It is designed to survive real data, real scale, and real failures.
+
+## What It Does
+
+InsightOps predicts and explains high-risk support tickets using historical customer support data. It is built to handle tens of thousands of messy, duplicated, and partially structured tickets without corrupting pipeline state or retrieval quality.
 
 ## Core Idea
 
-Most RAG systems fail in production because they ignore data quality, deduplication, versioning, and pipeline orchestration. InsightOps treats RAG as a data system first and an LLM interface second.
+Most support ticket ML systems fail because they rely on fragile preprocessing and one-off scripts. Most RAG systems fail because they ignore data quality entirely.
+
+InsightOps treats ticket analysis as a data engineering problem first, ML second, and LLMs last.
 
 The focus is on:
-- deterministic ingestion
-- reproducible embeddings
-- traceable retrieval
-- scalable pipelines
+- deterministic ticket ingestion
+- reproducible NLP features and embeddings
+- traceable predictions and retrieval
+- restart-safe pipelines
 
 ## Architecture Overview
 
 - **Ingestion Layer**
-  - Structured and semi-structured data ingestion
-  - Schema validation and normalization
-  - Null handling and consistency checks
+  - Ingests raw support tickets at scale
+  - Enforces schemas and normalization
+  - Handles nulls and malformed records explicitly
 
 - **Deduplication Engine**
-  - Content-based and key-based deduplication
-  - Guarantees one-to-one mapping between raw records and embeddings
-  - Prevents silent data inflation
+  - Prevents duplicate tickets and duplicate embeddings
+  - Enforces one ticket to one feature and embedding set
+  - Stops silent dataset inflation
 
-- **Embedding Pipeline**
-  - Batch embedding generation
-  - Embedding version control
-  - Decoupled from raw data lifecycle
+- **Feature and Embedding Pipeline**
+  - NLP feature extraction for risk prediction
+  - Batch embedding generation for semantic analysis
+  - Versioned features and embeddings
 
-- **Vector Store + Relational DB**
-  - Relational DB for metadata and source-of-truth
-  - Vector store for semantic retrieval
-  - Referential integrity between tables
+- **Datastores**
+  - Relational DB as the source of truth
+  - Vector DB for semantic retrieval and explanation
+  - Strong referential integrity across tables
 
-- **Retrieval Layer**
-  - Top-k semantic search
-  - Metadata-aware filtering
-  - Deterministic query behavior
+- **Prediction and Retrieval Layer**
+  - Risk scoring of tickets
+  - Metadata-aware semantic retrieval
+  - Deterministic top-k behavior
 
-- **LLM Reasoning Layer**
-  - Context grounding from retrieved chunks
-  - Explanation-focused outputs
-  - Designed for observability, not hallucination
+- **LLM Explanation Layer**
+  - Explains risk using retrieved historical tickets
+  - Grounded outputs only
+  - Built for observability, not hallucination
 
 ## Tech Stack
 
-- **Backend**: Python, FastAPI
-- **Data & Pipelines**: Pandas, SQL, Celery
-- **ML**: PyTorch, embedding models
-- **Databases**: PostgreSQL, Vector DB
-- **Infrastructure**: Docker, Cloud-native deployment (GCP-ready)
-- **Async & Jobs**: Celery workers for ingestion and embedding
+- **Backend**: Python, FastAPI  
+- **Data & Pipelines**: Pandas, SQL, Celery  
+- **ML**: PyTorch, NLP models, embeddings  
+- **Databases**: PostgreSQL, Vector DB    
+- **Async & Jobs**: Celery workers for ingestion, features, and embeddings
 
-## Key Features
+## Applied ML: Support Ticket Risk Analysis
 
-- End-to-end RAG pipeline built for production
-- Strict separation of raw data, deduplicated data, and embeddings
-- Embedding tables treated as first-class citizens
-- Pipeline state control and restart safety
-- Designed for large datasets, not toy examples
+**Support Ticket Risk Analysis System (Dec 2025)**  
+- Built an end-to-end ML pipeline to predict high-risk support tickets  
+- Trained on 20K+ historical tickets using NLP features  
+- Designed for reproducibility, retraining, and auditability  
+- Integrated with semantic retrieval for explainable risk assessment
 
-## Why InsightOps Exists
+## Why This Exists
 
-Most RAG tutorials work on clean, tiny datasets and collapse under real SaaS or enterprise data. InsightOps is built to answer:
-- How do you stop duplicate embeddings?
-- How do you re-embed safely?
-- How do you trust retrieval results?
-- How do you debug pipeline state?
+Most ticket risk models stop at a probability score and cannot explain or debug failures. Most RAG systems cannot be trusted on real enterprise data.
 
-This project is an answer to those problems.
+InsightOps exists to answer:
+- Why was this ticket flagged as high risk?
+- What similar past tickets influenced this prediction?
+- Can this pipeline be rerun without changing results?
+- Can this scale without corrupting embeddings?
 
 ## Current Status
 
-- Core ingestion and deduplication pipelines implemented
-- Embedding ingestion integrated
-- Retrieval logic functional
+- End-to-end ticket ingestion and deduplication implemented
+- Feature extraction and embedding pipelines live
+- Risk prediction and retrieval functional
 - Ongoing work on agentic workflows and evaluation
 
 ## Roadmap
 
-- Agent-based query routing
-- Embedding drift detection
-- Retrieval quality metrics
-- Multi-tenant dataset isolation
-- Automated re-embedding strategies
+- Agent-based triage and routing
+- Model drift and embedding drift detection
+- Risk calibration metrics
+- Multi-tenant isolation
+- Automated retraining and re-embedding
 
 ## Disclaimer
 
-InsightOps is not a wrapper around an LLM API. It is a data-first system that happens to use LLMs at the final stage. If you are looking for quick demos, this is not that project.
-
-## License
-
-MIT
+InsightOps is a support ticket risk system. RAG and LLMs are supporting components, not the product itself. If you are looking for prompt demos, this is not that.
