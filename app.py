@@ -6,10 +6,10 @@ import faiss
 from dotenv import load_dotenv
 load_dotenv()
 
-from rag import explain_risk  # your existing rag.py
+from rag import explain_risk
 from embed import embed_text
 
-# ---------- load artifacts (ONCE) ----------
+# ---------- load artifacts  ----------
 lr_model = joblib.load("models/risk_lr_model.joblib")
 THRESHOLD = joblib.load("models/risk_threshold.joblib")
 
